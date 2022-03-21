@@ -7,26 +7,28 @@ import LoginPage from "./components/login";
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
 import ProfilePage from "./components/profile";
+import MyApplicationPage from "./components/myapplication";
 // import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme} >
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} exact />
-        <Route path="/login" exact element={<LoginPage />} />
-        <Route path="/profile" exact element={<ProfilePage />} />
-        <Route
-          path="*"
-          element={
-            <main style={{ padding: "1rem" }}>
-              <p>404</p>
-            </main>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />} exact />
+          <Route path="/login" exact element={<LoginPage />} />
+          <Route path="/profile" exact element={<ProfilePage />} />
+          <Route path="/my-application" exact element={<MyApplicationPage />} />
+          <Route
+            path="*"
+            element={
+              <main style={{ padding: "1rem" }}>
+                <p>404</p>
+              </main>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById("root")

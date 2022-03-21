@@ -6,6 +6,7 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import LoginPage from "./components/login";
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
+import ProfilePage from "./components/profile";
 // import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
@@ -15,6 +16,7 @@ ReactDOM.render(
       <Routes>
         <Route path="/" element={<App />} exact />
         <Route path="/login" exact element={<LoginPage />} />
+        <Route path="/profile" exact element={<ProfilePage />} />
         <Route
           path="*"
           element={

@@ -17,19 +17,18 @@ const LoginPage = () => {
   return (
     <Container maxWidth="sm">
       <Box sx={{ margin: "50px auto" }}>
-        <Typography
-          variant="h4"
-          fontWeight={700}
-          component="div"
-          gutterBottom
-          textAlign={"center"}
-          sx={{
-            textDecoration: (theme) =>
-              `underline ${theme.palette.primary.main}`,
-          }}
-        >
-          LOGIN
-        </Typography>
+        <Box textAlign={'center'} mb={3}>
+          <Typography
+            variant="h4"
+            fontWeight={700}
+            sx={{
+              display:'inline',
+              borderBottom:theme=>`3px solid ${theme.palette.primary.main}`,
+              }}
+          >
+            LOGIN
+          </Typography>
+        </Box>
 
         <Box mb={1}>
           <Typography variant="h6" component="div">

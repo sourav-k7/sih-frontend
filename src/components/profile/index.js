@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { width } from "@mui/system";
 import { useState } from "react";
 const useStyle = makeStyles({
   unselected: {
@@ -31,7 +32,7 @@ const ProfilePage = () => {
      
 		 
 			  <Typography
-						  variant="h4"
+						  variant="h5"
 						  fontWeight={700}
 						  
 						  gutterBottom
@@ -44,8 +45,8 @@ const ProfilePage = () => {
 			  </Typography>
 		  
 	 
-      <Grid container spacing={2} marginTop={"30px"}>
-        <Grid item xs={4}>
+      <Grid container spacing={4} marginTop={"30px"}>
+        <Grid item xs={3.5}>
           <Box
             sx={{
               borderRadius: "10px",
@@ -54,6 +55,7 @@ const ProfilePage = () => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              padding:'10px'
             }}
           >
             <Avatar
@@ -84,15 +86,23 @@ const ProfilePage = () => {
               <Card
                 key={index}
                 sx={{
-                  width: "90%",
+                  width: "95%",
                   margin: "5px auto",
                   backgroundColor: "black",
                   color: "white",
                   cursor: "pointer",
+                  display:"flex",
+                  alignContent:"center",
+                  alignItems:"center",
+                  padding:"10px"
                 }}
                 onClick={() => setSelectedTab(index)}
                 className={selectedTab === index ? "" : classes.unselected}
               >
+                {selectedTab===index &&
+                  <div style={{borderRadius:"50%",backgroundColor:'white',height:'10px',width:'10px',}}></div>
+                }
+                
                 <CardContent>{detail}</CardContent>
               </Card>
             ))}

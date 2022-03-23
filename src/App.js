@@ -1,19 +1,19 @@
 import { HomeLayout } from "./components/home";
 import FootBar from "./components/footBar";
-import { Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/navbar";
+import { UserContextProvider } from "./context/user";
 
 function App() {
 	return (
+		
 		<div className="App">
 			<Navbar />
-			{/* <Routes>
-      <Route path="/" element={<HomeLayout />} />
-    </Routes> */}
+			
 			<HomeLayout />
 			<FootBar />
 		</div>
+		
 	);
 }
 

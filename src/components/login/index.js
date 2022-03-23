@@ -8,23 +8,30 @@ import {
   InputAdornment,
   IconButton,
 } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { UserContext } from "../../context/user";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const { login } = useContext(UserContext);
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   return (
     <Container maxWidth="sm">
       <Box sx={{ margin: "50px auto" }}>
-        <Box textAlign={'center'} mb={3}>
+        <Box textAlign={"center"} mb={3}>
           <Typography
             variant="h4"
             fontWeight={700}
             sx={{
-              display:'inline',
-              borderBottom:theme=>`3px solid ${theme.palette.primary.main}`,
-              }}
+              display: "inline",
+              borderBottom: (theme) =>
+                `3px solid ${theme.palette.primary.main}`,
+            }}
           >
             LOGIN
           </Typography>
@@ -34,7 +41,12 @@ const LoginPage = () => {
           <Typography variant="h6" component="div">
             Email
           </Typography>
-          <TextField fullWidth placeholder="johndoe@gmail.com" />
+          <TextField
+            fullWidth
+            placeholder="johndoe@gmail.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </Box>
         <Box mb={1}>
           <Typography variant="h6" component="div">
@@ -44,7 +56,8 @@ const LoginPage = () => {
           <OutlinedInput
             fullWidth
             type={showPassword ? "text" : "password"}
-            // value={values.password}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -58,21 +71,22 @@ const LoginPage = () => {
             }
           />
         </Box>
-        <Box mb={2}>
+        {/* <Box mb={2}>
           <Typography variant="h6" component="div">
             Department
           </Typography>
           <TextField fullWidth />
-        </Box>
-        
-          <Box sx={{display:'flex',justifyContent:'center'}}>
-            <Button
+        </Box> */}
+
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <Button
             variant="contained"
-            sx={{ color: "white" }}>
-              login
-            </Button>
-          </Box>
-        
+            sx={{ color: "white" }}
+            onClick={() => {login(email, password);navigate('/')}}
+          >
+            login
+          </Button>
+        </Box>
       </Box>
     </Container>
   );

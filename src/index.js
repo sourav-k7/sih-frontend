@@ -8,10 +8,12 @@ import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
 import ProfilePage from "./components/profile";
 import MyApplicationPage from "./components/myapplication";
+import { UserContextProvider } from "./context/user";
 // import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
+    <UserContextProvider>
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Routes>
@@ -30,6 +32,7 @@ ReactDOM.render(
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
+    </UserContextProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

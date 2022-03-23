@@ -18,6 +18,7 @@ import { makeStyles } from "@mui/styles";
 import { useState } from "react";
 import { styled } from "@mui/system";
 import withMainLayout from "../../layout/withMainLayout";
+// import { ReactComponent as Plus } from "../../Assets/plus.svg";
 
 const useStyle = makeStyles({
 	unselected: {
@@ -26,31 +27,22 @@ const useStyle = makeStyles({
 });
 
 const StyledTab = styled(Tab)`
-	color: black;
+	color: white;
 	cursor: pointer;
 	font-size: 0.875rem;
 	font-weight: bold;
-	background-color: transparent;
 	width: 100%;
 	border: none;
 	border-radius: 5px;
 	display: flex;
 	justify-content: center;
-	&:hover {
-		background-color: #ffd4ce;
-	}
-	&:focus {
-		color: #fff;
-		background-color: #ffb8ae;
-	}
+
 	&.${tabClasses.selected} {
-		background-color: #ff725e;
 		color: white;
 	}
 `;
 
 const TabBar = styled(Tabs)`
-	background-color: #ffe7e3;
 	border-radius: 8px;
 	margin-bottom: 16px;
 	display: flex;
@@ -82,7 +74,7 @@ const Dashboard = () => {
 							`3px solid ${theme.palette.primary.main}`,
 					}}
 				>
-					MY APPLICATIONS
+					Dashboard
 				</Typography>
 				<TextField
 					variant="outlined"
@@ -107,12 +99,10 @@ const Dashboard = () => {
 				</Box>
 			</Box>
 			<Grid container mt={4} spacing={2}>
-				<Grid item xs={3}>
+				<Grid item xs={3} sx={{ borderRight: 1, borderColor: "black" }}>
 					<Box
 						sx={{
 							borderRadius: "10px",
-							backgroundImage:
-								"linear-gradient(0deg,#FF725E ,#FFB4A9)",
 							display: "flex",
 							flexDirection: "column",
 							alignItems: "center",
@@ -127,7 +117,7 @@ const Dashboard = () => {
 							<Typography
 								variant="h6"
 								gutterBottom
-								component="div"
+								sx={{ textAlign: "center" }}
 							>
 								Create Application
 							</Typography>
@@ -135,20 +125,32 @@ const Dashboard = () => {
 						{applicationType.map((detail, index) => (
 							<Card
 								key={index}
-								sx={{
-									width: "90%",
-									margin: "5px auto",
-									backgroundColor: "black",
-									color: "white",
-									cursor: "pointer",
-								}}
+								sx={
+									selectedApplicationType === index
+										? {
+												width: "90%",
+												margin: "5px auto",
+												color: "white",
+												border: 1,
+												backgroundColor: (theme) =>
+													theme.palette.primary.main,
+												textAlign: "center",
+												borderColor: "black",
+												cursor: "pointer",
+										  }
+										: {
+												width: "90%",
+												margin: "5px auto",
+												color: "black",
+												border: 1,
+												backgroundColor: "color",
+												textAlign: "center",
+												borderColor: "black",
+												cursor: "pointer",
+										  }
+								}
 								onClick={() =>
 									setSelectedApplicationType(index)
-								}
-								className={
-									selectedApplicationType === index
-										? ""
-										: classes.unselected
 								}
 							>
 								<CardContent>{detail}</CardContent>
@@ -161,11 +163,24 @@ const Dashboard = () => {
 						value={currentTab}
 						onChange={(e, newValue) => setCurrentTab(newValue)}
 						variant="fullWidth"
+						color="white"
 						indicatorColor="transparent"
 					>
-						<StyledTab value="Approved" label="Approved" />
-						<StyledTab value="Rejected" label="Rejected" />
-						<StyledTab value="Pending" label="Pending" />
+						<StyledTab
+							value="Approved"
+							label="Approved"
+							sx={{ backgroundColor: "#00C337" }}
+						/>
+						<StyledTab
+							value="Rejected"
+							label="Rejected"
+							sx={{ backgroundColor: "rgba(254, 60, 32, 0.8)" }}
+						/>
+						<StyledTab
+							value="Pending"
+							label="Pending"
+							sx={{ backgroundColor: "rgba(255, 138, 52, 1)" }}
+						/>
 					</TabBar>
 				</Grid>
 			</Grid>

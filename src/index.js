@@ -11,6 +11,7 @@ import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
 import { ProfilePageLayout } from "./components/profile";
 import "./App.css";
+import { DashboardLayout } from "./components/dashboard";
 // import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
@@ -31,6 +32,11 @@ ReactDOM.render(
 							exact
 							element={<ProfilePageLayout />}
 						/>
+						<Route
+							path="/dashboard"
+							exact
+							element={<DashboardLayout />}
+						></Route>
 						<Route
 							path="*"
 							element={

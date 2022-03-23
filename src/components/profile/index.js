@@ -124,11 +124,17 @@ const ProfilePage = () => {
 					</Box>
 				</Grid>
 				<Grid item xs={8}>
-					<Skeleton animation={false} sx={{ height: "90%" }} />
+					<Box
+						sx={{
+							height: "90%",
+							width: "100%",
+							backgroundColor: "#CBCBCB",
+						}}
+					></Box>
 					<Button
 						size="large"
 						variant="contained"
-						sx={{ color: "white" }}
+						sx={{ color: "white", marginTop: "1rem" }}
 					>
 						Go to My Applications
 					</Button>

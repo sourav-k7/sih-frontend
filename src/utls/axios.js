@@ -2,7 +2,8 @@ import axios from 'axios';
 let token = '';
 const instance = axios.create({
 
-	baseURL: 'https://sih-docman.herokuapp.com/api',
+	// baseURL: 'https://sih-docman.herokuapp.com/api',
+	baseURL:'http://localhost:5000/api'
 
 });
 

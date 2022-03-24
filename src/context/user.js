@@ -1,9 +1,11 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 import axios from "../utls/axios";
 
 let initState = {
-  user: null,
+  name: null,
+  avatar:null,
+  email:null,
   salarySlip: null,
   dateOfJoining: null,
   designation: null,
@@ -14,9 +16,13 @@ let initState = {
   receivedApplication: null,
   sentApplication: null,
   token: null,
+  id:null
 };
 let field = {
-  user: "user",
+  id:"id",
+  email:"email",
+  name:"name",
+  avatar:"avatar",
   salarySlip: "salarySlip",
   dateOfJoining: "dateOfJoining",
   designation: "designation",
@@ -39,7 +45,7 @@ export const UserContext = createContext({
 
 export const UserContextProvider = (props) => {
   const [userState, setUserState] = useState(initState);
-  
+  console.log(userState)  ;
 
   function updateUserState(field, value) {
     setUserState((state) => ({
@@ -54,6 +60,25 @@ export const UserContextProvider = (props) => {
     }));
   }
 
+  async  function getUserDateFromToken(){
+    try {
+      const res = await axios.get('/user/verify');
+      updateUserState(field.name,res.data.user.name);
+      updateUserState(field.email,res.data.user.email);
+      updateUserState(field.id,res.data.user._id);
+      updateUserState(field.token,res.data.token)
+      updateUserState(field.token,localStorage.getItem('sih-token'));
+    } catch (error) { 
+      console.log(error);
+    }
+  }
+
+  useEffect(()=>{
+    if(localStorage.getItem('sih-token')){
+      getUserDateFromToken();
+    }
+  },[])
+
   async function login(email, password) {
     try {
       const res = await axios.post("/user/login", {
@@ -61,7 +86,10 @@ export const UserContextProvider = (props) => {
         password,
       });
       localStorage.setItem("sih-token", res.data.token);
-	
+      updateUserState(field.name,res.data.user.name);
+      updateUserState(field.email,res.data.user.email);
+      updateUserState(field.id,res.data.user._id);
+      updateUserState(field.token,res.data.token)
     } catch (err) {
       console.log(err);
     }
@@ -81,6 +109,7 @@ export const UserContextProvider = (props) => {
       receivedApplication: null,
       sentApplication: null,
       token: null,
+      id:null,
     });
   }
 

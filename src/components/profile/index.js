@@ -10,8 +10,10 @@ import {
   Typography,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { width } from "@mui/system";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../context/user";
+
 const useStyle = makeStyles({
   unselected: {
     opacity: 0.5,
@@ -19,7 +21,9 @@ const useStyle = makeStyles({
 });
 
 const ProfilePage = () => {
+  const { userState } = useContext(UserContext);
   const [selectedTab, setSelectedTab] = useState(0);
+  const navigate = useNavigate();
   const tabList = [
     "My Applications",
     "Salary Slip",
@@ -29,22 +33,18 @@ const ProfilePage = () => {
   const classes = useStyle();
   return (
     <Container maxWidth="lg">
-     
-		 
-			  <Typography
-						  variant="h5"
-						  fontWeight={700}
-						  
-						  gutterBottom
-						  sx={{
-							display:'inline',
-							borderBottom:theme=>`3px solid ${theme.palette.primary.main}`,
-						  }}
-			  >
-						  PROFILE
-			  </Typography>
-		  
-	 
+      <Typography
+        variant="h5"
+        fontWeight={700}
+        gutterBottom
+        sx={{
+          display: "inline",
+          borderBottom: (theme) => `3px solid ${theme.palette.primary.main}`,
+        }}
+      >
+        PROFILE
+      </Typography>
+
       <Grid container spacing={4} marginTop={"30px"}>
         <Grid item xs={3.5}>
           <Box
@@ -55,7 +55,7 @@ const ProfilePage = () => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              padding:'10px'
+              padding: "10px",
             }}
           >
             <Avatar
@@ -69,18 +69,16 @@ const ProfilePage = () => {
               component="div"
               marginTop={"30px"}
             >
-              Marry Doe
+              {userState.name}
             </Typography>
             <Typography
               variant="subtitle2"
               color={"text.secondary"}
               gutterBottom
+              sx={{ wordWrap: "break-word" }}
               component="div"
             >
-              Department - Education
-              <br />
-              Position - Teacher <br />
-              Salary - 3500000000
+              {userState.department}
             </Typography>
             {tabList.map((detail, index) => (
               <Card
@@ -91,27 +89,41 @@ const ProfilePage = () => {
                   backgroundColor: "black",
                   color: "white",
                   cursor: "pointer",
-                  display:"flex",
-                  alignContent:"center",
-                  alignItems:"center",
-                  padding:"10px"
+                  display: "flex",
+                  alignContent: "center",
+                  alignItems: "center",
+                  padding: "10px",
                 }}
                 onClick={() => setSelectedTab(index)}
                 className={selectedTab === index ? "" : classes.unselected}
               >
-                {selectedTab===index &&
-                  <div style={{borderRadius:"50%",backgroundColor:'white',height:'10px',width:'10px',}}></div>
-                }
-                
+                {selectedTab === index && (
+                  <div
+                    style={{
+                      borderRadius: "50%",
+                      backgroundColor: "white",
+                      height: "10px",
+                      width: "10px",
+                    }}
+                  ></div>
+                )}
+
                 <CardContent>{detail}</CardContent>
               </Card>
             ))}
           </Box>
         </Grid>
-        <Grid item xs={8} >
-		<Skeleton animation={false} sx={{height:'90%'}} />
-		<Button size='large' variant="contained" sx={{color:'white'}}>Go to My Applications</Button>
-		</Grid>
+        <Grid item xs={8}>
+          <Skeleton animation={false} sx={{ height: "90%" }} />
+          <Button
+            size="large"
+            variant="contained"
+            sx={{ color: "white" }}
+            onClick={() => navigate("/my-application")}
+          >
+            Go to My Applications
+          </Button>
+        </Grid>
       </Grid>
     </Container>
   );

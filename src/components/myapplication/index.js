@@ -6,9 +6,6 @@ import {
   Container,
   Grid,
   InputAdornment,
-  Tab,
-  tabClasses,
-  Tabs,
   TextField,
   Typography,
 } from "@mui/material";
@@ -16,7 +13,8 @@ import { BsSearch } from "react-icons/bs";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { makeStyles } from "@mui/styles";
 import { useState } from "react";
-import { styled } from '@mui/system';
+import NewApplicationDialog from "./newApplication";
+import ApplicationList from "./applicationList";
 
 const useStyle = makeStyles({
   unselected: {
@@ -24,53 +22,17 @@ const useStyle = makeStyles({
   },
 });
 
-const StyledTab = styled(Tab)`
-  color: black;
-  cursor: pointer;
-  font-size: 0.875rem;
-  font-weight: bold;
-  background-color: transparent;
-  width: 100%;
-  border: none;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-
-  &:hover {
-    background-color:#ffd4ce;
-  }
-
-  &:focus {
-    color: #fff;
-   background-color:#ffb8ae;
-  }
-
-  &.${tabClasses.selected} {
-    background-color: #ff725e;
-    color: white;
-  }
-`;
-
-const TabBar = styled(Tabs)`
-  background-color: #ffe7e3;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-content: space-between;
-`;
 
 const MyApplicationPage = () => {
-	const classes = useStyle();
-	const [selectedApplicationType,setSelectedApplicationType] = useState(0);
-	const applicationType = [
-		"Leave Application",
-		"XYZ Application",
-		"XYZ Application",
-		"XYZ Application",
-	  ];
-	const [currentTab,setCurrentTab] = useState('Approved');
+  const classes = useStyle();
+  const [newApplicationDialog, setNewApplicationDialog] = useState(false);
+  const [selectedApplicationType, setSelectedApplicationType] = useState(0);
+  const applicationType = [
+    "Leave Application",
+    "XYZ Application",
+    "XYZ Application",
+    "XYZ Application",
+  ];
   return (
     <Container maxWidth="lg" sx={{ mt: 2 }}>
       <Box display="flex" justifyContent={"space-between"}>
@@ -114,15 +76,27 @@ const MyApplicationPage = () => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              padding: 1,
             }}
           >
-            <Box display='flex' alignItems={'center'}>
-              <AiFillPlusCircle color="white" style={{marginBottom:'10px'}} fontSize='50px' />
+            <Box
+              display="flex"
+              alignItems={"center"}
+              sx={{ cursor: "pointer" }}
+              onClick={() => {
+                setNewApplicationDialog(true)
+              }}
+            >
+              <AiFillPlusCircle
+                color="white"
+                style={{ marginBottom: "10px" }}
+                fontSize="50px"
+              />
               <Typography variant="h6" gutterBottom component="div">
                 Create Application
               </Typography>
             </Box>
-			{applicationType.map((detail, index) => (
+            {applicationType.map((detail, index) => (
               <Card
                 key={index}
                 sx={{
@@ -133,7 +107,9 @@ const MyApplicationPage = () => {
                   cursor: "pointer",
                 }}
                 onClick={() => setSelectedApplicationType(index)}
-                className={selectedApplicationType === index ? "" : classes.unselected}
+                className={
+                  selectedApplicationType === index ? "" : classes.unselected
+                }
               >
                 <CardContent>{detail}</CardContent>
               </Card>
@@ -141,18 +117,13 @@ const MyApplicationPage = () => {
           </Box>
         </Grid>
         <Grid item xs={9}>
-		<TabBar
-        value={currentTab}
-        onChange={(e,newValue) =>setCurrentTab(newValue)}
-        variant='fullWidth'
-        indicatorColor='transparent'
-      >
-        <StyledTab value="Approved" label="Approved" />
-        <StyledTab value="Rejected" label="Rejected" />
-        <StyledTab value="Pending" label="Pending" />
-      </TabBar>
-		</Grid>
+         <ApplicationList />
+        </Grid>
       </Grid>
+      <NewApplicationDialog
+        open={newApplicationDialog}
+        handleClose={() => setNewApplicationDialog(false)}
+      />
     </Container>
   );
 };

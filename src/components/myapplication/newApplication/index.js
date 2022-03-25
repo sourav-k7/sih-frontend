@@ -13,11 +13,13 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { MdOutlineAttachment } from "react-icons/md";
+import { UserContext } from "../../../context/user";
 import axios from "../../../utls/axios";
 
 const NewApplicationDialog = ({ open, handleClose }) => {
+  const { updateUserState, field, userState } = useContext(UserContext);
   const inputElRef = useRef(null);
   const [userSearchOpen, setUserSearchOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
@@ -41,15 +43,26 @@ const NewApplicationDialog = ({ open, handleClose }) => {
     }
   }
 
-  async function SaveApplication(){
+  async function SaveApplication() {
+    const form = new FormData();
+    form.append("attachment", attachment);
+    form.append("subject", subject);
+    form.append("message", message);
+    form.append("typeOfApplication", typeOfApplication);
+    form.append("status", "Pending");
+    form.append("name", selectedUser.name);
+    form.append("sendToId", selectedUser._id);
     try {
-        const res  = await axios.post('/application',{
-          subject,message,typeOfApplication,
-          status:'Pending',
-          name:selectedUser.name,
-          sendToId:selectedUser._id
-        })
-        console.log(res.data);
+      const res = await axios.post("/application", form, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      });
+      updateUserState(field.sentApplication, [
+        ...userState.send,
+        { ...res.data },
+      ]);
+      handleClose();
     } catch (error) {
       console.log(error);
     }

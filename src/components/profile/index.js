@@ -13,6 +13,8 @@ import { makeStyles } from "@mui/styles";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/user";
+import ProfileData from "./profileData";
+import ServiceBook from "./serviceBook";
 
 const useStyle = makeStyles({
   unselected: {
@@ -26,24 +28,39 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const tabList = [
     "My Applications",
+    "Your Profile",
     "Salary Slip",
     "Service Book",
-    "Other Info",
   ];
+
+  function handleComponent(ind) {
+    if (ind === 1) {
+      return <ProfileData />;
+    } 
+    else if(ind === 3){
+      return <ServiceBook />;
+    }
+    else {
+      return (
+        <>
+          <Skeleton animation={false} sx={{ height: "90%" }} />
+          <Button
+            size="large"
+            variant="contained"
+            sx={{ color: "white" }}
+            onClick={() => navigate("/my-application")}
+          >
+            Go to My Applications
+          </Button>
+        </>
+      );
+    }
+  }
+
   const classes = useStyle();
   return (
     <Container maxWidth="lg">
-      <Typography
-        variant="h5"
-        fontWeight={700}
-        gutterBottom
-        sx={{
-          display: "inline",
-          borderBottom: (theme) => `3px solid ${theme.palette.primary.main}`,
-        }}
-      >
-        PROFILE
-      </Typography>
+      
 
       <Grid container spacing={4} marginTop={"30px"}>
         <Grid item xs={3.5}>
@@ -114,15 +131,7 @@ const ProfilePage = () => {
           </Box>
         </Grid>
         <Grid item xs={8}>
-          <Skeleton animation={false} sx={{ height: "90%" }} />
-          <Button
-            size="large"
-            variant="contained"
-            sx={{ color: "white" }}
-            onClick={() => navigate("/my-application")}
-          >
-            Go to My Applications
-          </Button>
+          {handleComponent(selectedTab)}
         </Grid>
       </Grid>
     </Container>

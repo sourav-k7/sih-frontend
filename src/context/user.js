@@ -63,6 +63,8 @@ export const UserContextProvider = (props) => {
   async  function getUserDateFromToken(){
     try {
       const res = await axios.get('/user/verify');
+      const res2 = await axios.get('/profile');
+      updateManyUserState({...res2.data});
       updateUserState(field.name,res.data.user.name);
       updateUserState(field.email,res.data.user.email);
       updateUserState(field.id,res.data.user._id);

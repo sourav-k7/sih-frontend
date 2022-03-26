@@ -16,6 +16,7 @@ import { UserContext } from "../../context/user";
 import ProfileData from "./profileData";
 import ServiceBook from "./serviceBook";
 import withMainLayout from "../../layout/withMainLayout";
+import ApplicationList from '../myapplication/applicationList'
 
 const useStyle = makeStyles({
 	unselected: {
@@ -35,7 +36,10 @@ const ProfilePage = () => {
   ];
 
   function handleComponent(ind) {
-    if (ind === 1) {
+	if(ind === 0){
+		return <ApplicationList dataList={userState.sentApplication} />
+	}
+   else if (ind === 1) {
       return <ProfileData />;
     } 
     else if(ind === 3){

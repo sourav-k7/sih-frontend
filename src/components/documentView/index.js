@@ -197,65 +197,7 @@ const DocumentView = () => {
 						)}
 					</p>
 				</Box>
-				<Box
-					sx={{
-						height: "20rem",
-						width: "17%",
-						borderRadius: "2%",
-						backgroundColor: "rgba(224, 224, 224, 1)",
-						padding: "1rem",
-					}}
-				>
-					<Typography varient="h3" sx={{ fontSize: 20 }}>
-						Tags
-					</Typography>
-					<Box mx={8} sx={{ display: "grid", gap: 2 }}>
-						<Button
-							variant="contained"
-							sx={{
-								fontSize: 10,
-								width: "fit",
-								color: "white",
-								borderRadius: 16,
-								padding: "",
-								backgroundColor: (theme) =>
-									theme.palette.primary.main,
-							}}
-							component="div"
-						>
-							urgent
-						</Button>
-						<Button
-							variant="contained"
-							sx={{
-								fontSize: 10,
-								width: "fit",
-								color: "white",
-								borderRadius: 16,
-								padding: "",
-								backgroundColor: (theme) =>
-									theme.palette.primary.main,
-							}}
-							component="div"
-						>
-							tendor
-						</Button>
-						<Button
-							variant="contained"
-							style={{
-								fontSize: 10,
-								maxWidth: "50px",
-								color: "white",
-								borderRadius: 16,
-								padding: "",
-								backgroundColor: (theme) =>
-									theme.palette.primary.main,
-							}}
-						>
-							approvel request
-						</Button>
-					</Box>
-				</Box>
+				
 			</Box>
 		</Container>
 	);

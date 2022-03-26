@@ -59,7 +59,7 @@ const NewApplicationDialog = ({ open, handleClose }) => {
         },
       });
       updateUserState(field.sentApplication, [
-        ...userState.send,
+        ...userState[field.sentApplication],
         { ...res.data },
       ]);
       handleClose();

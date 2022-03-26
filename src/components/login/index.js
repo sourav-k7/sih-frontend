@@ -14,7 +14,6 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { UserContext } from "../../context/user";
 import { useNavigate } from "react-router-dom";
 import withMainLayout from "../../layout/withMainLayout";
-import { Login } from "@mui/icons-material";
 
 const LoginPage = () => {
 	const [showPassword, setShowPassword] = useState(false);
@@ -92,7 +91,7 @@ const LoginPage = () => {
 						sx={{ color: "white" }}
 						onClick={() => {
 							login(email, password);
-							navigate("/");
+							navigate("/dashboard");
 						}}
 					>
 						login

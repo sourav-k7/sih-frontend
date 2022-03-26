@@ -59,17 +59,25 @@ export const UserContextProvider = (props) => {
       ...value,
     }));
   }
+  async function getUserProfile(){
+    try {
+      const res2 = await axios.get('/profile');
+      updateManyUserState({...res2.data});
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async  function getUserDateFromToken(){
     try {
       const res = await axios.get('/user/verify');
-      const res2 = await axios.get('/profile');
-      updateManyUserState({...res2.data});
       updateUserState(field.name,res.data.user.name);
       updateUserState(field.email,res.data.user.email);
       updateUserState(field.id,res.data.user._id);
       updateUserState(field.token,res.data.token)
       updateUserState(field.token,localStorage.getItem('sih-token'));
+      getUserProfile();
     } catch (error) { 
       console.log(error);
     }
@@ -92,6 +100,7 @@ export const UserContextProvider = (props) => {
       updateUserState(field.email,res.data.user.email);
       updateUserState(field.id,res.data.user._id);
       updateUserState(field.token,res.data.token)
+      getUserProfile();
     } catch (err) {
       console.log(err);
     }

@@ -88,6 +88,20 @@ const Navbar = () => {
           >
             Contact us
           </Link>
+          {
+            token && 
+            <Link
+            to="/profile"
+            style={{
+              textDecoration: "none",
+              color: "black",
+              fontWeight: 500,
+              fontSize: "14px",
+            }}
+          >
+            Profile
+          </Link>
+          }
           {!token ? (
             <Button
               onClick={() => {
@@ -103,7 +117,8 @@ const Navbar = () => {
               Login
             </Button>
           ) : (
-            <Button variant="outlined" onClick={logout}>
+            
+            <Button variant="outlined" onClick={()=>{logout();navigate('/')}}>
               Logout
             </Button>
           )}

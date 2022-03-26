@@ -16,6 +16,7 @@ import { HomeLayout } from "./components/home";
 import { LoginPageLayout } from "./components/login";
 import { ProfilePageLayout } from "./components/profile";
 import { DashboardLayout } from "./components/dashboard";
+import ProtectedRoute from "./components/privateRoute";
 
 // import reportWebVitals from './reportWebVitals';
 
@@ -36,17 +37,29 @@ ReactDOM.render(
 							<Route
 								path="/profile"
 								exact
-								element={<ProfilePageLayout />}
+								element={
+									<ProtectedRoute>
+										<ProfilePageLayout />
+									</ProtectedRoute>
+								}
 							/>
 							<Route
 								path="/dashboard"
 								exact
-								element={<DashboardLayout />}
+								element={
+									<ProtectedRoute>
+										<DashboardLayout />
+									</ProtectedRoute>
+								}
 							></Route>
 							<Route
 								path="/documentView"
 								exact
-								element={<DocumentViewLayout />}
+								element={
+									<ProtectedRoute>
+										<DocumentViewLayout />
+									</ProtectedRoute>
+								}
 							></Route>
 							<Route
 								path="*"

@@ -4,8 +4,8 @@ import { useContext } from "react";
 import { Navigate, Route } from "react-router-dom";
 
 const ProtectedRoute = ({ user, children }) => {
-	const { userState } = useContext(UserContext);
-	const { token } = userState;
+	const token = localStorage.getItem('sih-token');
+	console.log(token);
 	if (!token) {
 		return <Navigate to="/login" replace />;
 	}

@@ -1,4 +1,12 @@
-import { Box, Typography, Button } from "@mui/material";
+import {
+	Box,
+	Typography,
+	Button,
+	IconButton,
+	Avatar,
+	Menu,
+	MenuItem,
+} from "@mui/material";
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ReactComponent as NationalEmblem } from "../../Assets/nationalEmblem.svg";
@@ -9,7 +17,14 @@ const Navbar = () => {
 	const navigate = useNavigate();
 	const { userState, logout } = useContext(UserContext);
 	const { token } = userState;
-
+	const [anchorEl, setAnchorEl] = React.useState(null);
+	const openMenu = Boolean(anchorEl);
+	const handleClick = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
 	return (
 		<Box
 			sx={{
@@ -106,9 +121,83 @@ const Navbar = () => {
 							Login
 						</Button>
 					) : (
-						<Button variant="outlined" onClick={logout}>
-							Logout
-						</Button>
+						<>
+							<IconButton
+								onClick={handleClick}
+								aria-controls={
+									openMenu ? "account-menu" : undefined
+								}
+								aria-haspopup="true"
+								aria-expanded={openMenu ? "true" : undefined}
+							>
+								<Avatar
+									alt="Profile pic"
+									sx={{
+										width: 40,
+										height: 40,
+									}}
+								/>
+							</IconButton>
+							<Menu
+								id="account-menu"
+								anchorEl={anchorEl}
+								open={openMenu}
+								onClick={handleClose}
+								onClose={handleClose}
+								PaperProps={{
+									elevation: 0,
+									sx: {
+										overflow: "visible",
+										filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+										mt: 1.5,
+										"& .MuiAvatar-root": {
+											width: 32,
+											height: 32,
+											ml: -0.5,
+											mr: 1,
+										},
+										"&:before": {
+											content: '""',
+											display: "block",
+											position: "absolute",
+											top: 0,
+											right: 14,
+											width: 10,
+											height: 10,
+											bgcolor: "background.paper",
+											transform:
+												"translateY(-50%) rotate(45deg)",
+											zIndex: 0,
+										},
+									},
+								}}
+								transformOrigin={{
+									horizontal: "right",
+									vertical: "top",
+								}}
+								anchorOrigin={{
+									horizontal: "right",
+									vertical: "bottom",
+								}}
+							>
+								<MenuItem onClick={() => navigate("/profile")}>
+									Profile
+								</MenuItem>
+								<MenuItem
+									onClick={() => navigate("/dashboard")}
+								>
+									Dashboard
+								</MenuItem>
+								<MenuItem
+									onClick={() => {
+										logout();
+										navigate("/");
+									}}
+								>
+									Logout
+								</MenuItem>
+							</Menu>
+						</>
 					)}
 				</Box>
 			</section>

@@ -1,31 +1,29 @@
 import {
   Box,
+  Button,
   Card,
   CardContent,
   Container,
   Grid,
   Typography,
 } from "@mui/material";
-import { AiFillPlusCircle } from "react-icons/ai";
+import { IoMdAddCircle } from "react-icons/io";
 import { useContext, useState } from "react";
 import withMainLayout from "../../layout/withMainLayout";
 import ApplicationList from "../myapplication/applicationList";
 import { UserContext } from "../../context/user";
+import NewApplicationDialog from "../myapplication/newApplication";
 
 const Dashboard = () => {
   const [selectedApplicationType, setSelectedApplicationType] = useState(0);
+  const [openNewApplication, setOpenNewApplication] = useState(false);
   const { userState } = useContext(UserContext);
   const { receivedApplication } = userState;
-  const applicationType = [
-    "Leave Application",
-    "XYZ Application",
-    "XYZ Application",
-    "XYZ Application",
-  ];
+  const applicationType = ["Leave Application",'other'];
   return (
     <Container maxWidth="lg" sx={{ mt: 2 }}>
       <Grid container mt={4} spacing={2}>
-        <Grid item xs={3} sx={{ borderRight: 1, borderColor: "black" }}>
+        <Grid item xs={3}>
           <Box
             sx={{
               borderRadius: "10px",
@@ -34,45 +32,31 @@ const Dashboard = () => {
               alignItems: "center",
             }}
           >
-            <Box display="flex" alignItems={"center"}>
-              <AiFillPlusCircle
-                color="white"
-                style={{ marginBottom: "10px" }}
-                fontSize="50px"
-              />
-              <Typography
-                variant="h6"
-                gutterBottom
-                sx={{ textAlign: "center" }}
-              >
-                Create Application
-              </Typography>
-            </Box>
+           
+            <Button
+              variant="contained"
+              startIcon={<IoMdAddCircle />}
+              onClick={() => setOpenNewApplication(true)}
+              sx={{ color: "white", my: 1, width: "88%", p: 1 }}
+            >
+              Create Application
+            </Button>
             {applicationType.map((detail, index) => (
               <Card
                 key={index}
                 sx={
-                  selectedApplicationType === index
-                    ? {
+                   {
                         width: "90%",
                         margin: "5px auto",
                         color: "white",
                         border: 1,
-                        backgroundColor: (theme) => theme.palette.primary.main,
+                        backgroundColor:selectedApplicationType === index
+                        ? (theme) => theme.palette.primary.main:'gray',
                         textAlign: "center",
                         borderColor: "black",
                         cursor: "pointer",
                       }
-                    : {
-                        width: "90%",
-                        margin: "5px auto",
-                        color: "black",
-                        border: 1,
-                        backgroundColor: "color",
-                        textAlign: "center",
-                        borderColor: "black",
-                        cursor: "pointer",
-                      }
+                    
                 }
                 onClick={() => setSelectedApplicationType(index)}
               >
@@ -87,6 +71,10 @@ const Dashboard = () => {
           />
         </Grid>
       </Grid>
+      <NewApplicationDialog
+        open={openNewApplication}
+        handleClose={() => setOpenNewApplication(false)}
+      />
     </Container>
   );
 };

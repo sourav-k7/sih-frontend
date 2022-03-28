@@ -34,13 +34,15 @@ const DocumentView = () => {
 	const [pageNumber, setPageNumber] = useState(1);
 	const { userState } = useContext(UserContext);
 	const { documentId } = useParams();
-	const pdf = userState.receivedApplication.filter(
+	const pdf = userState?.receivedApplication?.filter(
 		(application) => application._id === documentId
 	);
-
-	const { subject } = pdf[0];
-
-	const attachment = pdf[0].attachment[0].data;
+	let attachment = null;
+	let subject = "";
+	if (pdf.length > 0) {
+		attachment = pdf[0]?.attachment[0]?.data;
+		subject = pdf[0].subject;
+	}
 
 	function onDocumentLoadSuccess({ numPages }) {
 		setNumPages(numPages);

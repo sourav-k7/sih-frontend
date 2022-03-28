@@ -16,7 +16,8 @@ import { UserContext } from "../../context/user";
 import ProfileData from "./profileData";
 import ServiceBook from "./serviceBook";
 import withMainLayout from "../../layout/withMainLayout";
-import SalarySlip from "./salarySlip";
+import ApplicationList from '../myapplication/applicationList'
+import SalarySlip
 
 const useStyle = makeStyles({
 	unselected: {
@@ -36,7 +37,10 @@ const ProfilePage = () => {
 	];
 
 	function handleComponent(ind) {
-		if (ind === 1) {
+		if(ind === 0){
+			return <ApplicationList dataList={userState.sentApplication} />
+		}
+		else if (ind === 1) {
 			return <ProfileData />;
 		} else if (ind === 3) {
 			return <ServiceBook />;
@@ -59,7 +63,8 @@ const ProfilePage = () => {
 		}
 	}
 
-	const classes = useStyle();
+
+  const classes = useStyle();
 	return (
 		<Container maxWidth="lg">
 			<Grid container spacing={4} marginTop={"30px"}>

@@ -15,9 +15,11 @@ import {
 import { BsSearch } from "react-icons/bs";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { makeStyles } from "@mui/styles";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { styled } from "@mui/system";
 import withMainLayout from "../../layout/withMainLayout";
+import ApplicationList from "../myapplication/applicationList";
+import { UserContext } from "../../context/user";
 // import { ReactComponent as Plus } from "../../Assets/plus.svg";
 
 const useStyle = makeStyles({
@@ -54,6 +56,8 @@ const TabBar = styled(Tabs)`
 const Dashboard = () => {
 	const classes = useStyle();
 	const [selectedApplicationType, setSelectedApplicationType] = useState(0);
+	const {userState}  = useContext(UserContext);
+	const {receivedApplication} = userState;
 	const applicationType = [
 		"Leave Application",
 		"XYZ Application",
@@ -63,50 +67,7 @@ const Dashboard = () => {
 	const [currentTab, setCurrentTab] = useState("Approved");
 	return (
 		<Container maxWidth="lg" sx={{ mt: 2 }}>
-			<Box display="flex" justifyContent={"space-between"}>
-				{/* <Typography
-					variant="h4"
-					fontWeight={700}
-					gutterBottom
-					sx={{
-						display: "inline",
-						borderBottom: (theme) =>
-							`3px solid ${theme.palette.primary.main}`,
-					}}
-				>
-					Dashboard
-				</Typography> */}
-				<TextField
-					variant="outlined"
-					sx={{
-						width: "32%",
-						position: "fixed",
-						top: 10,
-						height: "12rem",
-						left: "50%",
-						margin: "auto",
-						zIndex: 4,
-						transform: "translateX(-50%)",
-					}}
-					placeholder="Search Document"
-					InputProps={{
-						startAdornment: (
-							<InputAdornment position="start">
-								<BsSearch />
-							</InputAdornment>
-						),
-					}}
-				/>
-				{/* <Box display={"flex"} alignItems="center">
-					<Typography variant="body1" fontWeight={700}>
-						Hello, John
-					</Typography>
-					&emsp;
-					<Avatar
-						sx={{ bgcolor: (theme) => theme.palette.primary.main }}
-					/>
-				</Box> */}
-			</Box>
+			
 			<Grid container mt={4} spacing={2}>
 				<Grid item xs={3} sx={{ borderRight: 1, borderColor: "black" }}>
 					<Box
@@ -168,29 +129,7 @@ const Dashboard = () => {
 					</Box>
 				</Grid>
 				<Grid item xs={9}>
-					<TabBar
-						value={currentTab}
-						onChange={(e, newValue) => setCurrentTab(newValue)}
-						variant="fullWidth"
-						color="white"
-						indicatorColor="transparent"
-					>
-						<StyledTab
-							value="Approved"
-							label="Approved"
-							sx={{ backgroundColor: "#00C337" }}
-						/>
-						<StyledTab
-							value="Rejected"
-							label="Rejected"
-							sx={{ backgroundColor: "rgba(254, 60, 32, 0.8)" }}
-						/>
-						<StyledTab
-							value="Pending"
-							label="Pending"
-							sx={{ backgroundColor: "rgba(255, 138, 52, 1)" }}
-						/>
-					</TabBar>
+					<ApplicationList dataList={receivedApplication} />
 				</Grid>
 			</Grid>
 		</Container>

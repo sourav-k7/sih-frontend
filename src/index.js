@@ -1,13 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App";
 import Navbar from "./components/navbar";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-import LoginPage from "./components/login";
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
-import ProfilePage from "./components/profile";
 import MyApplicationPage from "./components/myapplication";
 import { UserContextProvider } from "./context/user";
 import FootBar from "./components/footBar";

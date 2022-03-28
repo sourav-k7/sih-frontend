@@ -4,8 +4,8 @@ import axios from "../utls/axios";
 
 let initState = {
   name: null,
-  avatar:null,
-  email:null,
+  avatar: null,
+  email: null,
   salarySlip: null,
   dateOfJoining: null,
   designation: null,
@@ -16,13 +16,13 @@ let initState = {
   receivedApplication: null,
   sentApplication: null,
   token: null,
-  id:null
+  id: null,
 };
 let field = {
-  id:"id",
-  email:"email",
-  name:"name",
-  avatar:"avatar",
+  id: "id",
+  email: "email",
+  name: "name",
+  avatar: "avatar",
   salarySlip: "salarySlip",
   dateOfJoining: "dateOfJoining",
   designation: "designation",
@@ -41,11 +41,12 @@ export const UserContext = createContext({
   updateManyUserState: null,
   logout: null,
   login: null,
+  documentAction:null,
 });
 
 export const UserContextProvider = (props) => {
   const [userState, setUserState] = useState(initState);
-  console.log(userState)  ;
+  console.log(userState);
 
   function updateUserState(field, value) {
     setUserState((state) => ({
@@ -59,35 +60,34 @@ export const UserContextProvider = (props) => {
       ...value,
     }));
   }
-  async function getUserProfile(){
+  async function getUserProfile() {
     try {
-      const res2 = await axios.get('/profile');
-      updateManyUserState({...res2.data});
-      
+      const res2 = await axios.get("/profile");
+      updateManyUserState({ ...res2.data });
     } catch (error) {
       console.log(error);
     }
   }
 
-  async  function getUserDateFromToken(){
+  async function getUserDateFromToken() {
     try {
-      const res = await axios.get('/user/verify');
-      updateUserState(field.name,res.data.user.name);
-      updateUserState(field.email,res.data.user.email);
-      updateUserState(field.id,res.data.user._id);
-      updateUserState(field.token,res.data.token)
-      updateUserState(field.token,localStorage.getItem('sih-token'));
+      const res = await axios.get("/user/verify");
+      updateUserState(field.name, res.data.user.name);
+      updateUserState(field.email, res.data.user.email);
+      updateUserState(field.id, res.data.user._id);
+      updateUserState(field.token, res.data.token);
+      updateUserState(field.token, localStorage.getItem("sih-token"));
       getUserProfile();
-    } catch (error) { 
+    } catch (error) {
       console.log(error);
     }
   }
 
-  useEffect(()=>{
-    if(localStorage.getItem('sih-token')){
+  useEffect(() => {
+    if (localStorage.getItem("sih-token")) {
       getUserDateFromToken();
     }
-  },[])
+  }, []);
 
   async function login(email, password) {
     try {
@@ -96,10 +96,10 @@ export const UserContextProvider = (props) => {
         password,
       });
       localStorage.setItem("sih-token", res.data.token);
-      updateUserState(field.name,res.data.user.name);
-      updateUserState(field.email,res.data.user.email);
-      updateUserState(field.id,res.data.user._id);
-      updateUserState(field.token,res.data.token)
+      updateUserState(field.name, res.data.user.name);
+      updateUserState(field.email, res.data.user.email);
+      updateUserState(field.id, res.data.user._id);
+      updateUserState(field.token, res.data.token);
       getUserProfile();
     } catch (err) {
       console.log(err);
@@ -120,8 +120,28 @@ export const UserContextProvider = (props) => {
       receivedApplication: null,
       sentApplication: null,
       token: null,
-      id:null,
+      id: null,
     });
+  }
+
+  async function documentAction(status, id) {
+    try {
+      const res = await axios.put("/application/status", {
+        status,
+        id,
+      });
+      updateUserState(
+        field.receivedApplication,
+        userState.receivedApplication.map((app) => {
+          if (app._id == id) {
+            app.status = status;
+          }
+          return app;
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -133,6 +153,7 @@ export const UserContextProvider = (props) => {
         updateManyUserState,
         logout,
         login,
+        documentAction
       }}
     >
       {props.children}

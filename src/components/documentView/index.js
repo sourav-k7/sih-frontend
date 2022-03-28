@@ -21,7 +21,6 @@ import { makeStyles } from "@mui/styles";
 import { useState } from "react";
 import { padding, styled } from "@mui/system";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
-import { AppBar } from "@mui/material";
 
 import pdfFile from "../../Assets/test.pdf";
 

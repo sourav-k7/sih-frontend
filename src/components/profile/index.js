@@ -16,6 +16,7 @@ import { UserContext } from "../../context/user";
 import ProfileData from "./profileData";
 import ServiceBook from "./serviceBook";
 import withMainLayout from "../../layout/withMainLayout";
+import SalarySlip from "./salarySlip";
 
 const useStyle = makeStyles({
 	unselected: {
@@ -24,45 +25,43 @@ const useStyle = makeStyles({
 });
 
 const ProfilePage = () => {
-  const { userState } = useContext(UserContext);
-  const [selectedTab, setSelectedTab] = useState(0);
-  const navigate = useNavigate();
-  const tabList = [
-    "My Applications",
-    "Your Profile",
-    "Salary Slip",
-    "Service Book",
-  ];
+	const { userState } = useContext(UserContext);
+	const [selectedTab, setSelectedTab] = useState(0);
+	const navigate = useNavigate();
+	const tabList = [
+		"My Applications",
+		"Your Profile",
+		"Salary Slip",
+		"Service Book",
+	];
 
-  function handleComponent(ind) {
-    if (ind === 1) {
-      return <ProfileData />;
-    } 
-    else if(ind === 3){
-      return <ServiceBook />;
-    }
-    else {
-      return (
-        <>
-          <Skeleton animation={false} sx={{ height: "90%" }} />
-          <Button
-            size="large"
-            variant="contained"
-            sx={{ color: "white" }}
-            onClick={() => navigate("/my-application")}
-          >
-            Go to My Applications
-          </Button>
-        </>
-      );
-    }
-  }
+	function handleComponent(ind) {
+		if (ind === 1) {
+			return <ProfileData />;
+		} else if (ind === 3) {
+			return <ServiceBook />;
+		} else if (ind === 2) {
+			return <SalarySlip />;
+		} else {
+			return (
+				<>
+					<Skeleton animation={false} sx={{ height: "90%" }} />
+					<Button
+						size="large"
+						variant="contained"
+						sx={{ color: "white" }}
+						onClick={() => navigate("/my-application")}
+					>
+						Go to My Applications
+					</Button>
+				</>
+			);
+		}
+	}
 
-  const classes = useStyle();
-  return (
-    <Container maxWidth="lg">
-      
-
+	const classes = useStyle();
+	return (
+		<Container maxWidth="lg">
 			<Grid container spacing={4} marginTop={"30px"}>
 				<Grid item xs={3.5}>
 					<Box
@@ -136,17 +135,17 @@ const ProfilePage = () => {
 									></div>
 								)}
 
-                <CardContent>{detail}</CardContent>
-              </Card>
-            ))}
-          </Box>
-        </Grid>
-        <Grid item xs={8}>
-          {handleComponent(selectedTab)}
-        </Grid>
-      </Grid>
-    </Container>
-  );
+								<CardContent>{detail}</CardContent>
+							</Card>
+						))}
+					</Box>
+				</Grid>
+				<Grid item xs={8}>
+					{handleComponent(selectedTab)}
+				</Grid>
+			</Grid>
+		</Container>
+	);
 };
 
 export const ProfilePageLayout = withMainLayout(ProfilePage);

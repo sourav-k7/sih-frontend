@@ -26,12 +26,22 @@ const DocumentView = () => {
   const { userState, documentAction } = useContext(UserContext);
   const { documentId } = useParams();
   const [application, setApplication] = useState();
+  const [isReceivedOrNot, setIsReceivedOrNot] = useState(false);
 
   useEffect(() => {
-    setApplication(
-      userState?.receivedApplication?.find((app) => app._id === documentId)
+    let appDate = userState?.receivedApplication?.find(
+      (app) => app._id === documentId
     );
+    if (appDate) {
+      setApplication(appDate);
+      setIsReceivedOrNot(true);
+    } else {
+      setApplication(
+        userState?.sentApplication?.find((app) => app._id === documentId)
+      );
+    }
   }, []);
+  console.log(application);
   // const app = userState?.receivedApplication?.filter(
   //   (application) => application._id === documentId
   // );
@@ -53,7 +63,7 @@ const DocumentView = () => {
       setUserData(res.data.user);
     } catch (error) {
       console.log(error);
-      if(error.response){
+      if (error.response) {
         toast.error(error.response.data.errors[0].msg);
       }
     }
@@ -153,14 +163,16 @@ const DocumentView = () => {
               {/* <Typography varient="h5">{(new Date(application?.createdAt)).toLocaleTimeString('en-IN',{
                 hour:'numeric',minute:'numeric',
               })}</Typography> */}
-              <Typography varient="h5">{(new Date(application?.createdAt)).toLocaleDateString('en-IN',{
-                day:'numeric',
-                month:'long',
-                year:'numeric',
-              })}</Typography>
+              <Typography varient="h5">
+                {new Date(application?.createdAt).toLocaleDateString("en-IN", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </Typography>
             </Box>
           </Box>
-          
+
           <Box
             sx={{
               display: "flex",
@@ -169,7 +181,7 @@ const DocumentView = () => {
               gap: 2,
             }}
           >
-            {application?.status === "Pending" ? (
+            {application?.status === "Pending" && isReceivedOrNot && (
               <>
                 <Button
                   variant="contained"
@@ -178,7 +190,7 @@ const DocumentView = () => {
                     documentAction("Approved", documentId);
                   }}
                 >
-                  Approved
+                  Approve
                 </Button>
                 <Button
                   variant="contained"
@@ -187,16 +199,23 @@ const DocumentView = () => {
                     documentAction("Declined", documentId);
                   }}
                 >
-                  Declined
+                  Decline
                 </Button>
               </>
-            ) : application?.status === "Approved" ? (
-              <Alert variant="filled" severity="success" sx={{width:'100%'}}>
+            )}
+            {application?.status === "Approved" && (
+              <Alert variant="filled" severity="success" sx={{ width: "100%" }}>
                 Approved
               </Alert>
-            ) : (
-              <Alert variant="filled" severity="error" sx={{width:'100%'}}>
+            )}
+            {application?.status === "Declined" && (
+              <Alert variant="filled" severity="error" sx={{ width: "100%" }}>
                 Declined
+              </Alert>
+            )}
+            {application?.status === "Pending" && !isReceivedOrNot && (
+              <Alert variant="filled" severity="info" sx={{ width: "100%" }}>
+                Approval Pending
               </Alert>
             )}
           </Box>

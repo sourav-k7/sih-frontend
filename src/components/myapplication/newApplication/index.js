@@ -22,6 +22,7 @@ import axios from "../../../utls/axios";
 const NewApplicationDialog = ({ open, handleClose }) => {
   const { updateUserState, field, userState } = useContext(UserContext);
   const inputElRef = useRef(null);
+  const [saving,setSaving] = useState(false);
   const [userSearchOpen, setUserSearchOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
   const [userSearchLoading, setUserSearchLoading] = useState(false);
@@ -48,6 +49,7 @@ const NewApplicationDialog = ({ open, handleClose }) => {
   }
 
   async function SaveApplication() {
+    setSaving(true);
     const form = new FormData();
     form.append("attachment", attachment);
     form.append("subject", subject);
@@ -67,7 +69,9 @@ const NewApplicationDialog = ({ open, handleClose }) => {
         { ...res.data },
       ]);
       handleClose();
+      setSaving(false);
     } catch (error) {
+      setSaving(false);
       console.log(error);
       if(error.response){
         toast.error(error.response.data.errors[0].msg);
@@ -171,13 +175,13 @@ const NewApplicationDialog = ({ open, handleClose }) => {
         />
       </DialogContent>
       <DialogActions sx={{ justifyContent: "start" }}>
-        <Button
+      {!saving? <Button
           onClick={SaveApplication}
           variant="contained"
           sx={{ color: "white" }}
         >
           Save
-        </Button>
+        </Button>:<CircularProgress sx={{px:1}} />}
         <Button onClick={handleClose} variant="outlined">
           Cancel
         </Button>

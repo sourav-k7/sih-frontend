@@ -26,6 +26,7 @@ import { AppBar } from "@mui/material";
 import pdfFile from "../../Assets/test.pdf";
 
 import theme from "../../theme";
+import axios from "../../utls/axios";
 
 const DocumentView = () => {
 	const [numPages, setNumPages] = useState(null);
@@ -35,6 +36,15 @@ const DocumentView = () => {
 		setNumPages(numPages);
 		setPageNumber(1);
 	}
+
+	async function getApplicationData(id){
+		try {
+		  const res = await axios.get(`/application/${id}`);
+		  
+		} catch (error) {
+		  console.log(error);
+		}
+	  }
 
 	function changePage(offSet) {
 		setPageNumber((prevPageNumber) => prevPageNumber + offSet);

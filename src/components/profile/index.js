@@ -73,16 +73,17 @@ const ProfilePage = () => {
 							display: "flex",
 							flexDirection: "column",
 							alignItems: "center",
-							padding: "10px",
+							justifyContent: "center",
+							paddingBottom: "2rem",
 						}}
 					>
 						<Avatar
 							alt="Profile pic"
 							sx={{
-								width: 60,
-								height: 60,
+								width: 75,
+								height: 75,
 								position: "absolute",
-								top: "-30px",
+								top: "-40px",
 							}}
 						/>
 
@@ -90,7 +91,7 @@ const ProfilePage = () => {
 							variant="h5"
 							gutterBottom
 							component="div"
-							marginTop={"30px"}
+							marginTop={"3rem"}
 						>
 							{userState.name}
 						</Typography>
@@ -107,7 +108,7 @@ const ProfilePage = () => {
 							<Card
 								key={index}
 								sx={{
-									width: "95%",
+									width: "16rem",
 									margin: "5px auto",
 									backgroundColor: "black",
 									color: "white",

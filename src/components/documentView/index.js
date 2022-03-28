@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import withMainLayout from "../../layout/withMainLayout";
 import {
 	Avatar,
@@ -32,14 +32,16 @@ import axios from "../../utls/axios";
 const DocumentView = () => {
 	const [numPages, setNumPages] = useState(null);
 	const [pageNumber, setPageNumber] = useState(1);
-	const { userState } = useContext(UserContext);
+	const [userData, setUserData] = useState();
+	const { userState, documentAction } = useContext(UserContext);
 	const { documentId } = useParams();
 	const pdf = userState?.receivedApplication?.filter(
 		(application) => application._id === documentId
 	);
+
 	let attachment = null;
 	let subject = "";
-	if (pdf.length > 0) {
+	if (pdf?.length > 0) {
 		attachment = pdf[0]?.attachment[0]?.data;
 		subject = pdf[0].subject;
 	}
@@ -52,10 +54,15 @@ const DocumentView = () => {
 	async function getApplicationData(id) {
 		try {
 			const res = await axios.get(`/application/${id}`);
+			setUserData(res.data.user);
 		} catch (error) {
 			console.log(error);
 		}
 	}
+
+	useEffect(() => {
+		getApplicationData(documentId);
+	}, []);
 
 	function changePage(offSet) {
 		setPageNumber((prevPageNumber) => prevPageNumber + offSet);
@@ -144,13 +151,13 @@ const DocumentView = () => {
 					>
 						<Box sx={{ display: "grid" }}>
 							<Typography varient="h3" sx={{ fontSize: 22 }}>
-								Marie Smith
+								{userData?.name}
 							</Typography>
 							<Typography
 								varient="h7"
 								sx={{ color: "rgba(69, 90, 100, 1)" }}
 							>
-								mariesmith@gov.in
+								{userData?.email}
 							</Typography>
 						</Box>
 					</Box>
@@ -204,12 +211,18 @@ const DocumentView = () => {
 						<Button
 							variant="contained"
 							sx={{ color: "white", backgroundColor: "green" }}
+							onClick={() => {
+								documentAction("Approved", documentId);
+							}}
 						>
 							Approved
 						</Button>
 						<Button
 							variant="contained"
 							sx={{ backgroundColor: "red", color: "white" }}
+							onClick={() => {
+								documentAction("Declined", documentId);
+							}}
 						>
 							Declined
 						</Button>

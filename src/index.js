@@ -50,7 +50,7 @@ ReactDOM.render(
 								}
 							></Route>
 							<Route
-								path="/documentView"
+								path="/documentView/:documentId"
 								exact
 								element={
 									<ProtectedRoute>

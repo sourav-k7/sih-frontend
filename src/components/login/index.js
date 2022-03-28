@@ -69,9 +69,9 @@ const LoginPage = () => {
 									edge="end"
 								>
 									{showPassword ? (
-										<VisibilityOff />
-									) : (
 										<Visibility />
+									) : (
+										<VisibilityOff />
 									)}
 								</IconButton>
 							</InputAdornment>

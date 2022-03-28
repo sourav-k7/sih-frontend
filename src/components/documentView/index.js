@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import withMainLayout from "../../layout/withMainLayout";
 import {
 	Avatar,
@@ -19,18 +19,31 @@ import { BsSearch } from "react-icons/bs";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { makeStyles } from "@mui/styles";
 import { useState } from "react";
+import { UserContext } from "../../context/user";
 import { padding, styled } from "@mui/system";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
-import { AppBar } from "@mui/material";
 
 import pdfFile from "../../Assets/test.pdf";
 
 import theme from "../../theme";
+<<<<<<< HEAD
+import { useParams } from "react-router-dom";
+=======
 import axios from "../../utls/axios";
+>>>>>>> 3758568579db32c13468f3af988e55fc139e44a5
 
 const DocumentView = () => {
 	const [numPages, setNumPages] = useState(null);
 	const [pageNumber, setPageNumber] = useState(1);
+	const { userState } = useContext(UserContext);
+	const { documentId } = useParams();
+	const pdf = userState.receivedApplication.filter(
+		(application) => application._id === documentId
+	);
+
+	const { subject } = pdf[0];
+
+	const attachment = pdf[0].attachment[0].data;
 
 	function onDocumentLoadSuccess({ numPages }) {
 		setNumPages(numPages);
@@ -76,7 +89,7 @@ const DocumentView = () => {
 				<TextField
 					variant="outlined"
 					sx={{
-						width: "32%",
+						width: "28%",
 						position: "fixed",
 						top: 10,
 						height: "12rem",
@@ -182,21 +195,59 @@ const DocumentView = () => {
 							</Typography>
 						</Box>
 					</Box>
+					<Box
+						sx={{
+							display: "flex",
+							width: "100%",
+							justifyContent: "center",
+							gap: 2,
+						}}
+					>
+						<Button
+							variant="contained"
+							sx={{ color: "white", backgroundColor: "green" }}
+						>
+							Approved
+						</Button>
+						<Button
+							variant="contained"
+							sx={{ backgroundColor: "red", color: "white" }}
+						>
+							Declined
+						</Button>
+					</Box>
 				</Box>
 				<Box
 					sx={{
 						height: "35rem",
 						width: "58%",
 						borderRadius: "2%",
+						display: "grid",
 					}}
 				>
-					<Document
+					{/* <Document
 						file={pdfFile}
 						onLoadSuccess={onDocumentLoadSuccess}
 					>
 						<Page height="600" pageNumber={pageNumber}></Page>
-					</Document>
-					<p>
+					</Document> */}
+					{/* <Box sx={{ display: "flex", gap: 1 }}>
+						<Typography variant="h6">Subject:{subject}</Typography>
+					</Box> */}
+					<Typography variant="h6">
+						Subject:{" "}
+						{subject.charAt(0).toUpperCase() +
+							subject.substr(1).toLowerCase()}
+					</Typography>
+					<img
+						src={attachment}
+						style={{
+							height: "100%",
+							width: "100%",
+							justifySelf: "center",
+						}}
+					></img>
+					{/* <p>
 						{" "}
 						Page {pageNumber} of {numPages}
 						{pageNumber > 1 && (
@@ -205,9 +256,8 @@ const DocumentView = () => {
 						{pageNumber < numPages && (
 							<Button onClick={changePageNext}>Next</Button>
 						)}
-					</p>
+					</p> */}
 				</Box>
-				
 			</Box>
 		</Container>
 	);

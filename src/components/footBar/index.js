@@ -23,15 +23,6 @@ const FootBar = () => {
 		{
 			name: "Twitter",
 		},
-		{
-			name: "Disclaimer",
-		},
-		{
-			name: "Feedback",
-		},
-		{
-			name: "Aarogya Setu",
-		},
 	];
 
 	return (

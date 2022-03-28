@@ -89,7 +89,7 @@ const LoginPage = () => {
 					<Button
 						variant="contained"
 						sx={{ color: "white" }}
-						onClick={async() => {
+						onClick={async () => {
 						await	login(email, password);
 							navigate("/dashboard");
 						}}

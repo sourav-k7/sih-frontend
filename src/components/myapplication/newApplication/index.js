@@ -72,8 +72,17 @@ const NewApplicationDialog = ({ open, handleClose }) => {
     SearchUser("");
   }, []);
 
+  function cleanUp(){
+    setSelectedUser();
+    setSubject('');
+    setMessage('');
+    setTypeOfApplication('');
+    setAttachment(null);
+    handleClose();
+  }
+
   return (
-    <Dialog fullWidth open={open} onClose={handleClose}>
+    <Dialog fullWidth open={open} onClose={cleanUp}>
       <DialogTitle id="alert-dialog-title">{"New Application"}</DialogTitle>
       <DialogContent>
         <FormControl fullWidth sx={{ my: 1 }}>

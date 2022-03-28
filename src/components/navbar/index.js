@@ -73,7 +73,7 @@ const Navbar = () => {
 					mr={4}
 				>
 					<Link
-						to="/"
+						to="/dashboard"
 						style={{
 							textDecoration: "none",
 							color: "black",
@@ -81,7 +81,7 @@ const Navbar = () => {
 							fontSize: 16,
 						}}
 					>
-						Home
+						Dashboard
 					</Link>
 					<Link
 						to="/"

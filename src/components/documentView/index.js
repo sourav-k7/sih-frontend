@@ -26,7 +26,11 @@ import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import pdfFile from "../../Assets/test.pdf";
 
 import theme from "../../theme";
+<<<<<<< HEAD
 import { useParams } from "react-router-dom";
+=======
+import axios from "../../utls/axios";
+>>>>>>> 3758568579db32c13468f3af988e55fc139e44a5
 
 const DocumentView = () => {
 	const [numPages, setNumPages] = useState(null);
@@ -45,6 +49,15 @@ const DocumentView = () => {
 		setNumPages(numPages);
 		setPageNumber(1);
 	}
+
+	async function getApplicationData(id){
+		try {
+		  const res = await axios.get(`/application/${id}`);
+		  
+		} catch (error) {
+		  console.log(error);
+		}
+	  }
 
 	function changePage(offSet) {
 		setPageNumber((prevPageNumber) => prevPageNumber + offSet);

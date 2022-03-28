@@ -72,7 +72,7 @@ const Navbar = () => {
 					}}
 					mr={4}
 				>
-					<Link
+					{token &&<Link
 						to="/dashboard"
 						style={{
 							textDecoration: "none",
@@ -82,7 +82,7 @@ const Navbar = () => {
 						}}
 					>
 						Dashboard
-					</Link>
+					</Link>}
 					<Link
 						to="/"
 						style={{

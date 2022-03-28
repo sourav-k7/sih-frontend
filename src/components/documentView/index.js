@@ -1,33 +1,23 @@
 import React, { useContext, useEffect } from "react";
 import withMainLayout from "../../layout/withMainLayout";
 import {
-  Avatar,
   Box,
-  Card,
-  CardContent,
   Container,
-  Grid,
   InputAdornment,
-  Tab,
-  tabClasses,
-  Tabs,
   TextField,
+  Alert,
   Button,
   Typography,
 } from "@mui/material";
 import { BsSearch } from "react-icons/bs";
-import { AiFillPlusCircle } from "react-icons/ai";
-import { makeStyles } from "@mui/styles";
 import { useState } from "react";
 import { UserContext } from "../../context/user";
-import { padding, styled } from "@mui/system";
-import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 
 import pdfFile from "../../Assets/test.pdf";
 
-import theme from "../../theme";
 import { useParams } from "react-router-dom";
 import axios from "../../utls/axios";
+import { toast } from "react-toastify";
 
 const DocumentView = () => {
   const [numPages, setNumPages] = useState(null);
@@ -35,16 +25,22 @@ const DocumentView = () => {
   const [userData, setUserData] = useState();
   const { userState, documentAction } = useContext(UserContext);
   const { documentId } = useParams();
-  const pdf = userState?.receivedApplication?.filter(
-    (application) => application._id === documentId
-  );
+  const [application, setApplication] = useState();
 
-  let attachment = null;
-  let subject = "";
-  if (pdf?.length > 0) {
-    attachment = pdf[0]?.attachment[0]?.data;
-    subject = pdf[0].subject;
-  }
+  useEffect(() => {
+    setApplication(
+      userState?.receivedApplication?.find((app) => app._id === documentId)
+    );
+  }, []);
+  // const app = userState?.receivedApplication?.filter(
+  //   (application) => application._id === documentId
+  // );
+  // let attachment = null;
+  // let subject = "";
+  // if (app?.length > 0) {
+  //   attachment = app[0]?.attachment[0]?.data;
+  //   subject = app[0].subject;
+  // }
 
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
@@ -57,6 +53,9 @@ const DocumentView = () => {
       setUserData(res.data.user);
     } catch (error) {
       console.log(error);
+      if(error.response){
+        toast.error(error.response.data.errors[0].msg);
+      }
     }
   }
 
@@ -151,30 +150,17 @@ const DocumentView = () => {
             }}
           >
             <Box sx={{ display: "grid" }}>
-              <Typography varient="h5">13-04-2022</Typography>
-              <Typography varient="h5">12:30:25 PM</Typography>
+              {/* <Typography varient="h5">{(new Date(application?.createdAt)).toLocaleTimeString('en-IN',{
+                hour:'numeric',minute:'numeric',
+              })}</Typography> */}
+              <Typography varient="h5">{(new Date(application?.createdAt)).toLocaleDateString('en-IN',{
+                day:'numeric',
+                month:'long',
+                year:'numeric',
+              })}</Typography>
             </Box>
           </Box>
-          {/* <Typography varient="h3" sx={{ fontSize: 20 }}>
-            Details
-          </Typography>
-          <Box
-            sx={{
-              height: "25%",
-              backgroundColor: "white",
-              display: "flex",
-              borderRadius: "2%",
-              color: "black",
-              padding: "1rem",
-            }}
-          >
-            <Box sx={{ display: "grid" }}>
-              <Typography varient="body1">
-                You will find the list of tendors for braille tablets. Please
-                approve this at Desk 2 level and forward for further approvals.
-              </Typography>
-            </Box>
-          </Box> */}
+          
           <Box
             sx={{
               display: "flex",
@@ -183,24 +169,36 @@ const DocumentView = () => {
               gap: 2,
             }}
           >
-            <Button
-              variant="contained"
-              sx={{ color: "white", backgroundColor: "green" }}
-              onClick={() => {
-                documentAction("Approved", documentId);
-              }}
-            >
-              Approved
-            </Button>
-            <Button
-              variant="contained"
-              sx={{ backgroundColor: "red", color: "white" }}
-              onClick={() => {
-                documentAction("Declined", documentId);
-              }}
-            >
-              Declined
-            </Button>
+            {application?.status === "Pending" ? (
+              <>
+                <Button
+                  variant="contained"
+                  sx={{ color: "white", backgroundColor: "green" }}
+                  onClick={() => {
+                    documentAction("Approved", documentId);
+                  }}
+                >
+                  Approved
+                </Button>
+                <Button
+                  variant="contained"
+                  sx={{ backgroundColor: "red", color: "white" }}
+                  onClick={() => {
+                    documentAction("Declined", documentId);
+                  }}
+                >
+                  Declined
+                </Button>
+              </>
+            ) : application?.status === "Approved" ? (
+              <Alert variant="filled" severity="success" sx={{width:'100%'}}>
+                Approved
+              </Alert>
+            ) : (
+              <Alert variant="filled" severity="error" sx={{width:'100%'}}>
+                Declined
+              </Alert>
+            )}
           </Box>
         </Box>
         <Box
@@ -208,17 +206,19 @@ const DocumentView = () => {
             height: "35rem",
             width: "58%",
             borderRadius: "2%",
-            display: "grid",
           }}
         >
-          
           <Typography variant="h6">
             Subject:{" "}
-            {subject.charAt(0).toUpperCase() + subject.substr(1).toLowerCase()}
+            {application?.subject?.charAt(0).toUpperCase() +
+              application?.subject.substr(1).toLowerCase()}
           </Typography>
-          {attachment && (
+          <Typography variant="body2" gutterBottom>
+            {application?.message}
+          </Typography>
+          {application?.attachment[0]?.data && (
             <img
-              src={attachment}
+              src={application?.attachment[0]?.data}
               alt="attachements"
               style={{
                 height: "100%",
@@ -227,7 +227,6 @@ const DocumentView = () => {
               }}
             ></img>
           )}
-        
         </Box>
       </Box>
     </Container>

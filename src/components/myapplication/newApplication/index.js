@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { useContext, useEffect, useRef, useState } from "react";
 import { MdOutlineAttachment } from "react-icons/md";
+import { toast } from "react-toastify";
 import { UserContext } from "../../../context/user";
 import axios from "../../../utls/axios";
 
@@ -40,6 +41,9 @@ const NewApplicationDialog = ({ open, handleClose }) => {
     } catch (error) {
       setUserSearchLoading(false);
       console.log(error);
+      if(error.response){
+        toast.error(error.response.data.errors[0].msg);
+      }
     }
   }
 
@@ -65,6 +69,9 @@ const NewApplicationDialog = ({ open, handleClose }) => {
       handleClose();
     } catch (error) {
       console.log(error);
+      if(error.response){
+        toast.error(error.response.data.errors[0].msg);
+      }
     }
   }
 

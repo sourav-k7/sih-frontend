@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 import axios from "../utls/axios";
 
@@ -41,7 +42,7 @@ export const UserContext = createContext({
   updateManyUserState: null,
   logout: null,
   login: null,
-  documentAction:null,
+  documentAction: null,
 });
 
 export const UserContextProvider = (props) => {
@@ -66,6 +67,9 @@ export const UserContextProvider = (props) => {
       updateManyUserState({ ...res2.data });
     } catch (error) {
       console.log(error);
+      if(error.response){
+        toast.error(error.response.data.errors[0].msg);
+      }
     }
   }
 
@@ -80,6 +84,9 @@ export const UserContextProvider = (props) => {
       getUserProfile();
     } catch (error) {
       console.log(error);
+      if(error.response){
+        toast.error(error.response.data.errors[0].msg);
+      } 
     }
   }
 
@@ -101,8 +108,12 @@ export const UserContextProvider = (props) => {
       updateUserState(field.id, res.data.user._id);
       updateUserState(field.token, res.data.token);
       getUserProfile();
+      toast.success(`Welcome ${res.data.user.name}`);
     } catch (err) {
       console.log(err);
+      if (err.response) {
+        toast.error(err.response.data.errors[0].msg);
+      }
     }
   }
 
@@ -141,10 +152,12 @@ export const UserContextProvider = (props) => {
       );
     } catch (error) {
       console.log(error);
+      if(error.response){
+        toast.error(error.response.data.errors[0].msg);
+      }
     }
   }
 
-  
   return (
     <UserContext.Provider
       value={{
@@ -154,7 +167,7 @@ export const UserContextProvider = (props) => {
         updateManyUserState,
         logout,
         login,
-        documentAction
+        documentAction,
       }}
     >
       {props.children}

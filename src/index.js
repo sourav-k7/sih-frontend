@@ -5,7 +5,6 @@ import Navbar from "./components/navbar";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
-import MyApplicationPage from "./components/myapplication";
 import { UserContextProvider } from "./context/user";
 import FootBar from "./components/footBar";
 import { DocumentViewLayout } from "./components/documentView";
@@ -14,11 +13,24 @@ import { LoginPageLayout } from "./components/login";
 import { ProfilePageLayout } from "./components/profile";
 import { DashboardLayout } from "./components/dashboard";
 import ProtectedRoute from "./components/privateRoute";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
 	<React.StrictMode>
+			<ToastContainer
+			position="top-right"
+			autoClose={5000}
+			hideProgressBar
+			newestOnTop={true}
+			closeOnClick
+			rtl={false}
+			pauseOnFocusLoss
+			theme="colored"
+			pauseOnHover
+			/>
 		<UserContextProvider>
 			<ThemeProvider theme={theme}>
 				<div className="App">

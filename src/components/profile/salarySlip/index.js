@@ -17,11 +17,12 @@ const SalarySlip = () => {
 
 	return (
 		<div>
-			{salarySlip && (
+			{/* {salarySlip && (
 				<Document file={pdfFile}>
 					<Page height="600" pageNumber={pageNumber}></Page>
 				</Document>
-			)}
+			)} */}
+			<img src="https://www.paisabazaar.com/wp-content/uploads/2019/09/Salary-Slip-Sample.png"  alt="Salary slip" />
 		</div>
 	);
 };
